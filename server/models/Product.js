@@ -9,7 +9,8 @@ const productSchema = mongoose.Schema({
         type: Number
     },
     file: {
-        type: String
+        type: String,
+        default: 'noimage.jpg'
     }
 },{ timestamps: true})
 

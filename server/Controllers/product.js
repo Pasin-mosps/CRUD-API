@@ -25,7 +25,7 @@ exports.list = async (req,res)=>{
 
 exports.create = async (req,res)=>{
     try{
-        var data = req.body
+        let data = req.body
         if (req.file) {
              data.file = req.file.filename
         }
@@ -40,7 +40,21 @@ exports.create = async (req,res)=>{
 exports.update = async (req,res) =>{
     try{
         const id = req.params.id
-        const updated = await Product.findOneAndUpdate({_id: id},req.body, {new: true}).exec()
+        let newData = req.body
+        // console.log(newData)
+        // console.log(req.file)
+        
+        if(typeof req.file !== 'undefined') {
+            newData.file = req.file.filename
+            await fs.unlink('./upload/' + newData.fileOld,(err) =>{
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log('Edit success')
+                }
+            })
+        }
+        const updated = await Product.findOneAndUpdate({_id: id},newData, {new: true}).exec()
         res.send(updated)
     } catch (err) {
         console.log(err)
