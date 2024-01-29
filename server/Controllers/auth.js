@@ -1,4 +1,3 @@
-
 const user = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -6,23 +5,23 @@ const { token } = require('morgan')
 
 exports.register = async(req, res) =>{
     try{
-        //1.Check user
+
         const {name, password} =req.body
         
-        let checkUser = await user.findOne({ name })
+        let checkUser = await user.findOne({ name }).exec()
         
         if(checkUser){
             return res.send('User Already Exists !!!').status(400)
         }
-        //2.Encrypt
-        const salt = await bcrypt.genSalt(30)
+        
+        const salt = await bcrypt.genSalt(10)
         checkUser = new user({
             name,
             password
         })
         checkUser.password = await bcrypt.hash(password,salt)
         console.log(checkUser)
-        //3.Save
+
         await checkUser.save()
         res.send('Register Success')
     } catch (err) {
