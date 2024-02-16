@@ -29,7 +29,7 @@ const appCheckVerification = async (req, res, next) => {
         res.status(401);
         return next("Unauthorized");
     }
-} 
+}
 
 router.get('/product', list)
 router.get('/product/:id', read)
